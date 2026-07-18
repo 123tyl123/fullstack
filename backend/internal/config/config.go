@@ -28,6 +28,9 @@ type Config struct {
 	JWTAccessSecret          string
 	JWTAccessTTLMinutes      int
 	JWTRefreshTTLHours       int
+	UploadDir                string
+	UploadPublicPath         string
+	AvatarMaxSizeMB          int
 }
 
 func Load() Config {
@@ -51,6 +54,9 @@ func Load() Config {
 		JWTAccessSecret:          getEnv("JWT_ACCESS_SECRET", "dev-secret-change-me"),
 		JWTAccessTTLMinutes:      getEnvAsInt("JWT_ACCESS_TTL_MINUTES", 15),
 		JWTRefreshTTLHours:       getEnvAsInt("JWT_REFRESH_TTL_HOURS", 168),
+		UploadDir:                getEnv("UPLOAD_DIR", "uploads"),
+		UploadPublicPath:         getEnv("UPLOAD_PUBLIC_PATH", "/api/uploads"),
+		AvatarMaxSizeMB:          getEnvAsInt("AVATAR_MAX_SIZE_MB", 5),
 	}
 }
 

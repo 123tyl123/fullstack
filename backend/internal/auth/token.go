@@ -5,6 +5,7 @@ import (
 	"crypto/sha256"
 	"encoding/base64"
 	"encoding/hex"
+	"errors"
 	"fmt"
 	"time"
 
@@ -19,6 +20,8 @@ type AccessClaims struct {
 	Role     uint8  `json:"role"`
 	jwt.RegisteredClaims
 }
+
+var ErrInvalidToken = errors.New("invalid token")
 
 func GenerateAccessToken(secret string, ttl time.Duration, user model.User) (string, error) {
 	now := time.Now()
@@ -41,6 +44,25 @@ func GenerateAccessToken(secret string, ttl time.Duration, user model.User) (str
 	}
 
 	return signed, nil
+}
+
+func ParseAccessToken(secret string, tokenString string) (*AccessClaims, error) {
+	claims := &AccessClaims{}
+	token, err := jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token) (any, error) {
+		if token.Method != jwt.SigningMethodHS256 {
+			return nil, ErrInvalidToken
+		}
+
+		return []byte(secret), nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	if !token.Valid {
+		return nil, ErrInvalidToken
+	}
+
+	return claims, nil
 }
 
 func GenerateRefreshToken() (string, error) {

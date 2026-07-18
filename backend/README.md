@@ -26,6 +26,8 @@ go run ./cmd/migrate up
 
 API docs: `docs/auth-api.md`
 
+Profile API docs: `docs/profile-api.md`
+
 Register:
 
 ```text

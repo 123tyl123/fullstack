@@ -12,6 +12,10 @@ const (
 
 	UserRoleAdmin  uint8 = 1
 	UserRoleAuthor uint8 = 2
+
+	StorageTypeLocal uint8 = 1
+
+	MediaStatusEnabled uint8 = 1
 )
 
 type BaseModel struct {
